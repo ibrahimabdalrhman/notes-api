@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FoldersModule } from './folders/folders.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { NotesModule } from './notes/notes.module';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true, 
     }),    
-    FoldersModule, FoldersModule],
+     FoldersModule, NotesModule],
   controllers: [AppController],
   providers: [AppService],
 })

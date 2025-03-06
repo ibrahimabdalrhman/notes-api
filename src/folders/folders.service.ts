@@ -1,26 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFolderDto } from './dto/create-folder.dto';
 import { UpdateFolderDto } from './dto/update-folder.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Folder } from './entities/folder.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class FoldersService {
-  create(createFolderDto: CreateFolderDto) {
-    return 'This action adds a new folder';
+
+  constructor(@InjectRepository(Folder) private readonly folderRepository: Repository<Folder>) { }
+
+  async create(createFolderDto: CreateFolderDto) {
+    const folder = await this.folderRepository.create(createFolderDto);
+    return this.folderRepository.save(folder);
   }
 
-  findAll() {
-    return `This action returns all folders`;
+  async findAll() {
+    const folders = await this.folderRepository.find();
+    return folders;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} folder`;
+  async findOne(id: string) {
+    const folder = await this.folderRepository.findOne({ where: { id } });
+    if (!folder) throw new NotFoundException(`Folder with ID ${id} not found`);
+    return folder;
   }
 
-  update(id: number, updateFolderDto: UpdateFolderDto) {
-    return `This action updates a #${id} folder`;
+  async update(id: string, updateFolderDto: UpdateFolderDto) {
+    const folder = await this.folderRepository.update(id, updateFolderDto);
+    return folder;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} folder`;
+  async remove(id: string) {
+    const result = await this.folderRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Folder with ID ${id} not found`);
+    }
   }
 }
