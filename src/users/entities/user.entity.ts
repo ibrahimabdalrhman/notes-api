@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Folder } from "src/folders/entities/folder.entity";
+import { Note } from "src/notes/entities/note.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -10,6 +12,10 @@ export class User {
     email: string;
     @Column({ nullable: false })
     password: string;
+    @OneToMany(() => Folder, (folder) => folder.user)
+    folders: Folder[];
+    @OneToMany(() => Note, (note) => note.user)
+    notes: Note[];
     @CreateDateColumn()
     createdAt: Date;
     @UpdateDateColumn()

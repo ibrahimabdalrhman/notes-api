@@ -8,5 +8,6 @@ import { Folder } from './entities/folder.entity';
   imports: [TypeOrmModule.forFeature([Folder])],
   controllers: [FoldersController],
   providers: [FoldersService],
+  exports: [FoldersService],
 })
 export class FoldersModule {}

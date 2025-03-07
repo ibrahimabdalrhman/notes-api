@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { NoteType } from "../enum/note-type";
 import { Folder } from "src/folders/entities/folder.entity";
+import { User } from "src/users/entities/user.entity";
 
 
 @Entity()
@@ -17,6 +18,8 @@ export class Note {
     list_notes: string[] | null;
     @ManyToOne(() => Folder, (folder) => folder.notes, { onDelete: 'CASCADE' })
     folder: Folder;
+    @ManyToOne(() => User, (user) => user.notes, { onDelete: 'CASCADE' })
+    user: User;
     @CreateDateColumn()
     created_at: Date;
     @UpdateDateColumn()

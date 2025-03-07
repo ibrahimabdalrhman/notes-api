@@ -10,31 +10,39 @@ export class FoldersService {
 
   constructor(@InjectRepository(Folder) private readonly folderRepository: Repository<Folder>) { }
 
-  async create(createFolderDto: CreateFolderDto) {
-    const folder = await this.folderRepository.create(createFolderDto);
-    return this.folderRepository.save(folder);
+  async create(createFolderDto: CreateFolderDto, user) {
+    const folder = this.folderRepository.create({
+      ...createFolderDto,
+      user: user.userId, 
+    });
+    return await this.folderRepository.save(folder);
   }
 
-  async findAll() {
-    const folders = await this.folderRepository.find();
-    return folders;
+  async findAll(user) {
+    return await this.folderRepository.find({
+      where: { user: { id: user.userId } },
+      relations: ['user'], 
+    });
   }
 
-  async findOne(id: string) {
-    const folder = await this.folderRepository.findOne({ where: { id } });
-    if (!folder) throw new NotFoundException(`Folder with ID ${id} not found`);
+  async findOne(id: string, user) {
+    const folder = await this.folderRepository.findOne({
+      where: { id, user: { id: user.userId } },
+    });
+
+    if (!folder) throw new NotFoundException(`Folder with ID ${id} not found or not accessible`);
     return folder;
   }
 
-  async update(id: string, updateFolderDto: UpdateFolderDto) {
-    const folder = await this.folderRepository.update(id, updateFolderDto);
-    return folder;
+  async update(id: string, updateFolderDto: UpdateFolderDto, user) {
+    const folder = await this.findOne(id, user); 
+    Object.assign(folder, updateFolderDto);
+    return await this.folderRepository.save(folder);
   }
 
-  async remove(id: string) {
-    const result = await this.folderRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException(`Folder with ID ${id} not found`);
-    }
+  async remove(id: string, user) {
+    const folder = await this.findOne(id, user); 
+    return await this.folderRepository.remove(folder);
   }
 }
+
