@@ -19,7 +19,7 @@ Before running the project, ensure you have the following tools installed:
 1. Clone the repository to your local machine:
    ```sh
    git clone https://github.com/ibrahimabdalrhman/notes-api.git
-   cd notes-api
+   cd notes-api/backend/
    ```
 2. Install the required dependencies:
    ```sh
