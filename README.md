@@ -1,99 +1,173 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Notes API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Notes API is a **NestJS** application for managing notes and folders with authentication support using **JWT** and a **PostgreSQL** database.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## **🚀 Prerequisites**
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Before running the project, ensure you have the following tools installed:
 
-## Project setup
+- **Node.js** (version 16 or later)
+- **Docker** (for easy database management)
+- **PostgreSQL** (if you prefer not to use Docker)
 
-```bash
-$ npm install
+---
+
+## **📥 Installation**
+
+1. Clone the repository to your local machine:
+   ```sh
+   git clone https://github.com/ibrahimabdalrhman/notes-api.git
+   cd notes-api
+   ```
+2. Install the required dependencies:
+   ```sh
+   npm install
+   ```
+
+---
+
+## **⚙️ Environment Setup**
+
+Create a **`.env`** file in the project root and add the following configurations:
+
+```env
+PORT=3000
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=pass123
+DB_NAME=notes_db
+JWT_SECRET=your_secret_key
 ```
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## **🐳 Running the Database with Docker**
 
-# watch mode
-$ npm run start:dev
+If you prefer to run PostgreSQL via Docker, use the following command:
 
-# production mode
-$ npm run start:prod
+```sh
+docker-compose up -d
 ```
 
-## Run tests
+This will start:
 
-```bash
-# unit tests
-$ npm run test
+- **PostgreSQL** database on port `5432`
+- **Adminer** database management interface at `http://localhost:8080`
 
-# e2e tests
-$ npm run test:e2e
+> **Note**: You can access **Adminer** with the following credentials:
+>
+> - **Host:** `db`
+> - **Username:** `postgres`
+> - **Password:** `pass123`
+> - **Database:** `notes_db`
 
-# test coverage
-$ npm run test:cov
-```
+---
 
-## Deployment
+## **🚀 Running the Application**
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+1. Start the application:
+   ```sh
+   npm run start
+   ```
+2. If you want auto-reloading on code changes:
+   ```sh
+   npm run start:dev
+   ```
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+---
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+## **🔑 Authentication**
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### **1️⃣ Register a New User**
 
-## Resources
+- **Endpoint:** `POST /auth/register`
+- **Body:**
+  ```json
+  {
+    "username": "testuser",
+    "email": "test@example.com",
+    "password": "password123"
+  }
+  ```
 
-Check out a few resources that may come in handy when working with NestJS:
+### **2️⃣ Login**
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- **Endpoint:** `POST /auth/login`
+- **Body:**
+  ```json
+  {
+    "identifier": "testuser", // or email
+    "password": "password123"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "access_token": "your_jwt_token"
+  }
+  ```
 
-## Support
+> Use the `access_token` for authentication in other requests by adding it to the header: `Authorization: Bearer your_jwt_token`.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## **🗂 Managing Folders and Notes**
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### **📂 Folders**
+
+- **Create Folder:** `POST /folders`
+- **Get All Folders:** `GET /folders`
+- **Update Folder:** `PATCH /folders/:id`
+- **Delete Folder:** `DELETE /folders/:id`
+
+### **📝 Notes**
+
+- **Create Note:** `POST /notes`
+- **Get All Notes:** `GET /notes`
+- **Search & Filter:** `GET /notes?folderId=xyz&search=keyword`
+- **Get Single Note:** `GET /notes/:id`
+- **Update Note:** `PATCH /notes/:id`
+- **Delete Note:** `DELETE /notes/:id`
+
+---
+
+## **🛡️ Security Features**
+
+- **CSRF Protection** using `csurf`
+- **Helmet** for security headers
+- **Rate Limiting** to prevent excessive requests
+- **CORS** to control allowed origins
+
+---
+
+## **📌 Notes**
+
+- Ensure you pass the **`access_token`** in the header when making protected requests.
+- Run **`docker-compose up -d`** before starting the app if using PostgreSQL via Docker.
+
+---
+
+## **🛠 Useful Commands**
+
+| Command                 | Description                           |
+| ---------------------- | ----------------------------------- |
+| `npm run start`        | Start the application               |
+| `npm run start:dev`    | Start the app with auto-reload      |
+| `npm run build`        | Build a production-ready version    |
+| `docker-compose up -d` | Start the database                  |
+| `docker-compose down`  | Stop the database                   |
+
+---
+
+## **📞 Support & Contribution**
+
+If you encounter any issues or have suggestions, feel free to open an **Issue** or submit a **Pull Request** in the repository!
+
+**🎯 Enjoy using Notes API! 🚀**
 
 ## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
