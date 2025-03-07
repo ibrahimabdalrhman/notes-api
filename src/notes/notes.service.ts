@@ -31,11 +31,20 @@ export class NotesService {
     return await this.noteRepository.save(note);
   }
 
-  async findAll(user) {
-    return await this.noteRepository.find({
-      where: { user: { id: user.userId } },
-      relations: ['folder'],
-    });
+  async findAll(user, folderId?: string, search?: string) {
+    const query = this.noteRepository.createQueryBuilder('note')
+      .where('note.userId = :userId', { userId: user.userId })
+      .leftJoinAndSelect('note.folder', 'folder');
+
+    if (folderId) {
+      query.andWhere('note.folderId = :folderId', { folderId });
+    }
+
+    if (search) {
+      query.andWhere('(note.title ILIKE :search OR note.text_notes ILIKE :search)', { search: `%${search}%` });
+    }
+
+    return await query.getMany();
   }
 
   async findOne(id: string, user) {

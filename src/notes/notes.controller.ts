@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
@@ -15,8 +15,12 @@ export class NotesController {
   }
 
   @Get()
-  findAll(  @Request() req) {
-    return this.notesService.findAll(req.user);
+  findAll(
+    @Request() req,
+    @Query('folderId') folderId?: string,  
+    @Query('search') search?: string       
+  ) {
+    return this.notesService.findAll(req.user, folderId, search);
   }
 
   @Get(':id')
